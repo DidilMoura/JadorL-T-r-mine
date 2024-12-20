@@ -62,8 +62,8 @@ void ADC1_Initialize (void)
 {
     // ASAM enabled; DMABM disabled; ADSIDL disabled; DONE disabled; DMAEN disabled; FORM Absolute decimal result, unsigned, right-justified; SAMP disabled; SSRC Internal counter ends sampling and starts conversion; MODE12 10-bit; ADON enabled; 
     AD1CON1 = 0x8074;
-    // CSCNA enabled; NVCFG0 AVSS; PVCFG AVDD; ALTS disabled; BUFM disabled; SMPI Generates interrupt after completion of every 7th sample/conversion operation; BUFREGEN disabled; 
-    AD1CON2 = 0x418;
+    // CSCNA enabled; NVCFG0 AVSS; PVCFG AVDD; ALTS disabled; BUFM disabled; SMPI Generates interrupt after completion of every 2nd sample/conversion operation; BUFREGEN enabled; 
+    AD1CON2 = 0xC04;
     // SAMC 31; EXTSAM disabled; PUMPEN disabled; ADRC FOSC/2; ADCS 15; 
     AD1CON3 = 0x1F0F;
     // CH0SA AN0; CH0SB AN0; CH0NB AVSS; CH0NA AVSS; 

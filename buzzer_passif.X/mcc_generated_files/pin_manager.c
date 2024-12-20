@@ -54,6 +54,11 @@
 #include "pin_manager.h"
 
 /**
+ Section: File specific functions
+*/
+void (*IO_RD13_InterruptHandler)(void) = NULL;
+
+/**
  Section: Driver Interface Function Definitions
 */
 void PIN_MANAGER_Initialize (void)
@@ -113,7 +118,7 @@ void PIN_MANAGER_Initialize (void)
      * Setting the Analog/Digital Configuration SFR(s)
      ***************************************************************************/
     ANSA = 0x06C0;
-    ANSB = 0xFFFC;
+    ANSB = 0xFF3F;
     ANSC = 0x2010;
     ANSD = 0x00C0;
     ANSE = 0x0210;
@@ -127,5 +132,66 @@ void PIN_MANAGER_Initialize (void)
     RPOR5bits.RP11R = 0x000D;    //RD0->OC1:OC1
 
     __builtin_write_OSCCONL(OSCCON | 0x40); // lock PPS
+    
+    /****************************************************************************
+     * Interrupt On Change: negative
+     ***************************************************************************/
+    IOCNDbits.IOCND13 = 1;    //Pin : RD13
+    /****************************************************************************
+     * Interrupt On Change: flag
+     ***************************************************************************/
+    IOCFDbits.IOCFD13 = 0;    //Pin : RD13
+    /****************************************************************************
+     * Interrupt On Change: config
+     ***************************************************************************/
+    PADCONbits.IOCON = 1;    //Config for PORTD
+    
+    /* Initialize IOC Interrupt Handler*/
+    IO_RD13_SetInterruptHandler(&IO_RD13_CallBack);
+    
+    /****************************************************************************
+     * Interrupt On Change: Interrupt Enable
+     ***************************************************************************/
+    IFS1bits.IOCIF = 0; //Clear IOCI interrupt flag
+    IEC1bits.IOCIE = 1; //Enable IOCI interrupt
+}
+
+void __attribute__ ((weak)) IO_RD13_CallBack(void)
+{
+
+}
+
+void IO_RD13_SetInterruptHandler(void (* InterruptHandler)(void))
+{ 
+    IEC1bits.IOCIE = 0; //Disable IOCI interrupt
+    IO_RD13_InterruptHandler = InterruptHandler; 
+    IEC1bits.IOCIE = 1; //Enable IOCI interrupt
+}
+
+void IO_RD13_SetIOCInterruptHandler(void *handler)
+{ 
+    IO_RD13_SetInterruptHandler(handler);
+}
+
+/* Interrupt service routine for the IOCI interrupt. */
+void __attribute__ (( interrupt, no_auto_psv )) _IOCInterrupt ( void )
+{
+    if(IFS1bits.IOCIF == 1)
+    {
+        if(IOCFDbits.IOCFD13 == 1)
+        {
+            if(IO_RD13_InterruptHandler) 
+            { 
+                IO_RD13_InterruptHandler(); 
+            }
+            
+            IOCFDbits.IOCFD13 = 0;  //Clear flag for Pin - RD13
+
+        }
+        
+        
+        // Clear the flag
+        IFS1bits.IOCIF = 0;
+    }
 }
 

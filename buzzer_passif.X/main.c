@@ -47,17 +47,41 @@
 */
 #include "mcc_generated_files/system.h"
 
-/*
-                         Main application
- */
+int flag = 0;
+int onOff = 1;
+
+void IO_RD13_CallBack(void)
+{
+    onOff ^= 1;
+    OC1RS = 0;
+    OC1R = 0;
+    
+}
+
+void ADC1_CallBack(void)
+{
+    flag ^= 1;
+}
+
+void convert(uint16_t sensor1, uint16_t sensor2 )
+{
+    uint16_t frequence = 20000 - 19800/1024 * sensor1;
+    OC1RS = frequence;
+    uint16_t volume = sensor2 * 0.95 * frequence/1024 - 100;
+    OC1R = volume;
+}
 int main(void)
 {
     // initialize the device
     SYSTEM_Initialize();
     OC1_Start() ;
+
     while (1)
     {
-        // Add your application code
+        if (onOff && flag) {
+            convert(ADC1BUF2, ADC1BUF3);
+            flag = 0;
+        }
     }
 
     return 1;

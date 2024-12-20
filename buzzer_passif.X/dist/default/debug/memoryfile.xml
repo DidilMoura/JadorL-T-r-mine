@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/buzzer_passif.X.production.elf">
+  <executable name="dist/default/debug/buzzer_passif.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>32768</length>
-      <used>50</used>
-      <free>32718</free>
+      <used>128</used>
+      <free>32640</free>
     </memory>
     <memory name="program">
       <units>bytes</units>

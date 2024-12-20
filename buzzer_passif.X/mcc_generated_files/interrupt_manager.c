@@ -52,6 +52,9 @@
 */
 void INTERRUPT_Initialize (void)
 {
+    //    IOCI: IOC -  Interrupt On Change Interrupt
+    //    Priority: 1
+        IPC4bits.IOCIP = 1;
     //    ADI: ADC1 - A/D Converter 1
     //    Priority: 1
         IPC3bits.AD1IP = 1;

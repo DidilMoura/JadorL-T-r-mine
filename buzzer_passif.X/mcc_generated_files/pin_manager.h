@@ -346,6 +346,152 @@
 
 */
 #define channel_AN3_SetDigitalOutput() (_TRISB3 = 0)
+/**
+  @Summary
+    Sets the GPIO pin, RD13, high using LATD13.
+
+  @Description
+    Sets the GPIO pin, RD13, high using LATD13.
+
+  @Preconditions
+    The RD13 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RD13 high (1)
+    IO_RD13_SetHigh();
+    </code>
+
+*/
+#define IO_RD13_SetHigh()          (_LATD13 = 1)
+/**
+  @Summary
+    Sets the GPIO pin, RD13, low using LATD13.
+
+  @Description
+    Sets the GPIO pin, RD13, low using LATD13.
+
+  @Preconditions
+    The RD13 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RD13 low (0)
+    IO_RD13_SetLow();
+    </code>
+
+*/
+#define IO_RD13_SetLow()           (_LATD13 = 0)
+/**
+  @Summary
+    Toggles the GPIO pin, RD13, using LATD13.
+
+  @Description
+    Toggles the GPIO pin, RD13, using LATD13.
+
+  @Preconditions
+    The RD13 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RD13
+    IO_RD13_Toggle();
+    </code>
+
+*/
+#define IO_RD13_Toggle()           (_LATD13 ^= 1)
+/**
+  @Summary
+    Reads the value of the GPIO pin, RD13.
+
+  @Description
+    Reads the value of the GPIO pin, RD13.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RD13
+    postValue = IO_RD13_GetValue();
+    </code>
+
+*/
+#define IO_RD13_GetValue()         _RD13
+/**
+  @Summary
+    Configures the GPIO pin, RD13, as an input.
+
+  @Description
+    Configures the GPIO pin, RD13, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RD13 as an input
+    IO_RD13_SetDigitalInput();
+    </code>
+
+*/
+#define IO_RD13_SetDigitalInput()  (_TRISD13 = 1)
+/**
+  @Summary
+    Configures the GPIO pin, RD13, as an output.
+
+  @Description
+    Configures the GPIO pin, RD13, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RD13 as an output
+    IO_RD13_SetDigitalOutput();
+    </code>
+
+*/
+#define IO_RD13_SetDigitalOutput() (_TRISD13 = 0)
 
 /**
     Section: Function Prototypes
@@ -381,6 +527,67 @@
 */
 void PIN_MANAGER_Initialize (void);
 
+/**
+  @Summary
+    Callback for IO_RD13 Pin.
+
+  @Description
+    This routine is callback for IO_RD13 Pin
+
+  @Param
+    None.
+
+  @Returns
+    None
+ 
+ 
+  @Example 
+    <code>
+        IO_RD13_SetInterruptHandler(&IO_RD13_CallBack);
+    </code>
+*/
+void IO_RD13_CallBack(void);
+
+
+/**
+  @Summary
+    Assigns a function pointer with a callback address.
+
+  @Description
+    This routine assigns a function pointer with a callback address.
+
+  @Param
+    Address of the callback routine.
+
+  @Returns
+    None
+ 
+  @Example 
+    <code>
+        IO_RD13_SetInterruptHandler(&IO_RD13_CallBack);
+    </code>
+*/
+void IO_RD13_SetInterruptHandler(void (* InterruptHandler)(void));
+
+/**
+  @Summary
+    Assigns a function pointer with a callback address.
+
+  @Description
+    This routine assigns a function pointer with a callback address.
+
+  @Param
+    Address of the callback routine.
+
+  @Returns
+    None
+ 
+  @Example 
+    <code>
+        IO_RD13_SetIOCInterruptHandler(&IO_RD13_CallBack);
+    </code>
+*/
+void __attribute__((deprecated("\nThis will be removed in future MCC releases. \nUse IO_RD13_SetInterruptHandler instead."))) IO_RD13_SetIOCInterruptHandler(void *handler);
 
 
 #endif
